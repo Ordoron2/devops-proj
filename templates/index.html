@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Docker Image Cleaner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="mb-4">מנהל תמונות Docker</h1>
+        <div class="card shadow">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Tags</th>
+                            <th>גודל</th>
+                            <th>פעולות</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for img in images %}
+                        <tr>
+                            <td><code>{{ img.short_id }}</code></td>
+                            <td>{{ img.tags[0] if img.tags else "None" }}</td>
+                            <td>{{ (img.attrs['Size'] / 1048576) | round(2) }} MB</td>
+                            <td>
+                                <a href="/delete/{{ img.id }}" class="btn btn-danger btn-sm">מחק</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
