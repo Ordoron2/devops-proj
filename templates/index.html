@@ -1,32 +1,42 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Docker Image Cleaner</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { margin-top: 50px; border-radius: 15px; }
+        .img-id { font-family: monospace; color: #e83e8c; }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <h1 class="mb-4">מנהל תמונות Docker</h1>
+<body>
+    <div class="container">
         <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <h2>Docker Image Manager (DevOps Tool)</h2>
+            </div>
             <div class="card-body">
-                <table class="table table-hover">
+                <table class="table table-striped table-hover mt-3">
                     <thead class="table-dark">
                         <tr>
-                            <th>ID</th>
+                            <th>Short ID</th>
                             <th>Tags</th>
-                            <th>גודל</th>
-                            <th>פעולות</th>
+                            <th>Size (MB)</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for img in images %}
                         <tr>
-                            <td><code>{{ img.short_id }}</code></td>
-                            <td>{{ img.tags[0] if img.tags else "None" }}</td>
+                            <td class="img-id">{{ img.short_id }}</td>
+                            <td>{{ img.tags[0] if img.tags else "<none>" }}</td>
                             <td>{{ (img.attrs['Size'] / 1048576) | round(2) }} MB</td>
                             <td>
-                                <a href="/delete/{{ img.id }}" class="btn btn-danger btn-sm">מחק</a>
+                                <a href="{{ url_for('delete_image', image_id=img.id) }}" 
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Are you sure you want to delete this image?')">Delete</a>
                             </td>
                         </tr>
                         {% endfor %}
