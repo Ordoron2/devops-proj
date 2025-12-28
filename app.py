@@ -48,3 +48,12 @@ def health():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+    
+@app.route('/delete/<image_id>')
+def delete_image(image_id):
+    try:
+        # פקודת מחיקה חזקה (Force)
+        client.images.remove(image=image_id, force=True)
+        return redirect(url_for('index'))
+    except Exception as e:
+        return f"שגיאה במחיקה: {e}", 400
